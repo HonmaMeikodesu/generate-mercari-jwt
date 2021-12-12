@@ -43,7 +43,7 @@ const privateJsonWebKey = {
   y: "aZy9Pa39dIP-U-WF9IoYK-LgSUUZiht5gG7bqQ-dbPQ",
 } as const;
 
-export default async function generateMercariJwt(apiUrl: string, method?: string = "GET") {
+export default async function generateMercariJwt(apiUrl: string, method: string = "GET") {
   const { crv, kty, x, y} = privateJsonWebKey;
   const key = await subtle.importKey(
     "jwk",
