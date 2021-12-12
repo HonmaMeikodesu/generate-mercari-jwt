@@ -43,7 +43,7 @@ const privateJsonWebKey = {
   y: "aZy9Pa39dIP-U-WF9IoYK-LgSUUZiht5gG7bqQ-dbPQ",
 } as const;
 
-export default async function generateMercariJwt(apiUrl: string) {
+export default async function generateMercariJwt(apiUrl: string, method?: string = "GET") {
   const { crv, kty, x, y} = privateJsonWebKey;
   const key = await subtle.importKey(
     "jwk",
@@ -69,8 +69,8 @@ export default async function generateMercariJwt(apiUrl: string) {
   const payload = JSON.stringify({
     iat: Math.ceil(new Date().getTime() / 1000),
     jti: v4(),
-    htu: "https://api.mercari.jp/search_index/search",
-    htm: "GET",
+    htu: apiUrl,
+    htm: method,
     uuid: v4(),
   });
   const jwtWrap = [
@@ -90,5 +90,3 @@ export default async function generateMercariJwt(apiUrl: string) {
   );
   return jwtWrap + "." + encodeBase64Url(signature);
 }
-
-generateMercariJwt("https://api.mercari.jp/search_index/search").then((res) => console.log(res));
