@@ -10,6 +10,7 @@
   "author": "honmameiko",
   "license": "GPL-3.0",
   "dependencies": {
+    "@peculiar/webcrypto": "1.2.3",
     "uuid": "^8.3.2"
   },
   "repository": {

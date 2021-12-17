@@ -1,29 +1,11 @@
 import { v4 } from "uuid";
-import { webcrypto } from "crypto";
+import { Crypto } from "@peculiar/webcrypto";
 
-declare module "crypto" {
-  namespace webcrypto {
-    const subtle: {
-      importKey: (
-        format: string,
-        keyData: any,
-        algorithm: any,
-        extractable: boolean,
-        keyUsages: Array<string>
-      ) => Promise<CryptoKey>;
-      sign: (
-        keyData: any,
-        key: CryptoKey,
-        signature: ArrayBuffer
-      ) => Promise<ArrayBuffer>;
-    };
-  }
-}
 
-const { subtle } = webcrypto;
+const { subtle } = new Crypto();
 
 const encodeBase64Url = function (e: ArrayBuffer) {
-  return btoa(String.fromCharCode(...new Uint8Array(e)))
+  return Buffer.from((String.fromCharCode(...new Uint8Array(e))), "binary").toString("base64")
     .replace(/=/g, "")
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
@@ -45,7 +27,7 @@ const privateJsonWebKey = {
 
 export default async function generateMercariJwt(apiUrl: string, method: string = "GET") {
   const { crv, kty, x, y} = privateJsonWebKey;
-  const key = await subtle.importKey(
+  const key = await (subtle as any).importKey(
     "jwk",
     privateJsonWebKey,
     {
