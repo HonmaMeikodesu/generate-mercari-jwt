@@ -1,21 +1,12 @@
-# generate-mercari-jwt
-
-This is a util developed to help generating a valid Json Web Token for the use case of requesting to mercari API.
-
-Should be handy to those crawlers who want to get through the Oauth2.0 set up by mercari :)
-
-# Usage
-
-The module has an indirect dependency to NodeJS v10 Crypto API, so please make sure your Node version is v10 or higher
-
-``` javascript
-import generateMercariJwt from "generate-mercari-jwt";
+import generateMercariJwt from "./index";
 import axios from "axios";
+import { v4 } from "uuid";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 generateMercariJwt("https://api.mercari.jp/v2/entities:search", "POST").then((jwt) => {
   return axios.post("https://api.mercari.jp/v2/entities:search", {
     "pageSize": 10,
-    "searchSessionId": "just_dont_let_it_be_empty",
+    "searchSessionId": v4(),
     "searchCondition": {
         "keyword": "本間芽衣子",
         "excludeKeyword": "",
@@ -56,9 +47,11 @@ generateMercariJwt("https://api.mercari.jp/v2/entities:search", "POST").then((jw
       "Content-Type": "application/json",
       "Accept": "application/json",
       "DPoP": jwt
-    }
+    },
+    httpsAgent: new HttpsProxyAgent("http://localhost:10809"),
+    proxy: false,
   })
 }).then(res => {
   console.log(res.data);
 });
-```
+
