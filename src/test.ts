@@ -8,7 +8,7 @@ generateMercariJwt("https://api.mercari.jp/v2/entities:search", "POST").then((jw
     "pageSize": 10,
     "searchSessionId": v4(),
     "searchCondition": {
-        "keyword": "本間芽衣子",
+        "keyword": "test",
         "excludeKeyword": "",
         "sort": "SORT_SCORE",
         "order": "ORDER_DESC",
