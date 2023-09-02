@@ -1,6 +1,6 @@
 {
   "name": "generate-mercari-jwt",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "generating a valid Json Web Token to request mercari API",
   "main": "dist/index.js",
   "scripts": {
